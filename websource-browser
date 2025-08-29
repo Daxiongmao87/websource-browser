@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * @file tools/web-navigator.js
- * @description Dynamic Web Navigation CLI Tool
+ * @file tools/websource-browser.js
+ * @description Dynamic Web Page Analysis CLI Tool
  * 
  * A command-line tool that provides dynamic, real-time interaction with any website
  * via Puppeteer. This tool enables JavaScript execution, visual inspection, and 
@@ -21,33 +21,33 @@ import { createServer, createConnection } from 'net';
 
 const DEBUG_MODE = process.env.DEBUG === 'true' || process.argv.includes('--debug');
 
-class NavigatorLogger {
+class WebSourceLogger {
   constructor(debugMode = false) {
     this.debugMode = debugMode;
     if (this.debugMode) {
-      console.log('[Web Navigator] [Debug] 🐛 DEBUG MODE ENABLED - Verbose output enabled');
+      console.log('[WebSource Browser] [Debug] 🐛 DEBUG MODE ENABLED - Verbose output enabled');
     }
   }
 
   success(message) {
-    console.log(`[Web Navigator] ✅ ${message}`);
+    console.log(`[WebSource Browser] ✅ ${message}`);
   }
 
   warn(message) {
-    console.warn(`[Web Navigator] ⚠️ ${message}`);
+    console.warn(`[WebSource Browser] ⚠️ ${message}`);
   }
 
   error(message) {
-    console.error(`[Web Navigator] ❌ ${message}`);
+    console.error(`[WebSource Browser] ❌ ${message}`);
   }
 
   info(message) {
-    console.log(`[Web Navigator] 📋 ${message}`);
+    console.log(`[WebSource Browser] 📋 ${message}`);
   }
 
   debug(message) {
     if (this.debugMode) {
-      console.log(`[Web Navigator] [Debug] 🔍 ${message}`);
+      console.log(`[WebSource Browser] [Debug] 🔍 ${message}`);
     }
   }
 }
@@ -55,7 +55,7 @@ class NavigatorLogger {
 class SessionManager {
   constructor(logger) {
     this.logger = logger;
-    this.sessionsDir = join(homedir(), '.local', 'lib', 'web-navigator', 'sessions');
+    this.sessionsDir = join(homedir(), '.local', 'lib', 'websource-browser', 'sessions');
     this.ensureSessionsDir();
   }
 
@@ -168,7 +168,7 @@ class SessionManager {
 class SessionDaemon {
   constructor(sessionName, options = {}) {
     this.sessionName = sessionName;
-    this.logger = new NavigatorLogger(DEBUG_MODE);
+    this.logger = new WebSourceLogger(DEBUG_MODE);
     this.options = options;
     this.browser = null;
     this.lastActivity = Date.now();
@@ -354,9 +354,9 @@ class SessionDaemon {
   }
 }
 
-class WebNavigator {
+class WebSourceBrowser {
   constructor() {
-    this.logger = new NavigatorLogger(DEBUG_MODE);
+    this.logger = new WebSourceLogger(DEBUG_MODE);
     this.sessionManager = new SessionManager(this.logger);
     this.browser = null;
     this.page = null;
@@ -392,9 +392,9 @@ class WebNavigator {
         stdio: 'ignore',
         env: {
           ...process.env,
-          WEB_NAVIGATOR_DAEMON: 'true',
-          WEB_NAVIGATOR_SESSION_NAME: sessionName,
-          WEB_NAVIGATOR_HEADLESS: headless.toString()
+          WEBSOURCE_BROWSER_DAEMON: 'true',
+          WEBSOURCE_BROWSER_SESSION_NAME: sessionName,
+          WEBSOURCE_BROWSER_HEADLESS: headless.toString()
         }
       });
       
@@ -954,7 +954,7 @@ class WebNavigator {
   async takeScreenshot(filename = null, sessionName = 'default') {
     if (!filename) {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      filename = `web-navigator-screenshot-${timestamp}.png`;
+      filename = `websource-browser-screenshot-${timestamp}.png`;
     }
     
     this.logger.debug(`Taking screenshot: ${filename}`);
@@ -1304,8 +1304,8 @@ function parseArgs() {
 
 // Display help message
 function showHelp() {
-  console.log(`[Web Navigator] 
-Web Navigator - Dynamic Browser Automation Tool with Persistent Sessions
+  console.log(`[WebSource Browser] 
+WebSource Browser - Dynamic Web Page Analysis Tool with Persistent Sessions
 
 IMPORTANT: This tool now requires persistent browser sessions. You must --start a session first!
 
@@ -1337,29 +1337,29 @@ General Options:
 Workflow Examples:
 
   # 1. Start a session (browser stays open)
-  web-navigator --start --session google-search
+  websource-browser --start --session google-search
   
   # 2. Navigate to a website
-  web-navigator --navigate "https://google.com" --session google-search
+  websource-browser --navigate "https://google.com" --session google-search
   
   # 3. Interact dynamically (session persists between commands)
-  web-navigator --execute "document.querySelector('input[name=\"q\"]').value = 'hhx86'" --session google-search
-  web-navigator --execute "document.querySelector('form').submit()" --session google-search
-  web-navigator --screenshot search-results.png --session google-search
+  websource-browser --execute "document.querySelector('input[name=\"q\"]').value = 'hhx86'" --session google-search
+  websource-browser --execute "document.querySelector('form').submit()" --session google-search
+  websource-browser --screenshot search-results.png --session google-search
   
   # 4. Stop the session when done
-  web-navigator --stop --session google-search
+  websource-browser --stop --session google-search
 
 Quick Start:
   # Default session workflow
-  web-navigator --start                              # Start session
-  web-navigator --navigate "https://example.com"     # Navigate
-  web-navigator --view                               # View full page content
-  web-navigator --selectors                          # Analyze page structure
-  web-navigator --selectors "body"                   # Analyze selectors within body
-  web-navigator --view "h1"                          # View specific element
-  web-navigator --execute "document.title"           # Execute JavaScript
-  web-navigator --stop                               # Stop session
+  websource-browser --start                              # Start session
+  websource-browser --navigate "https://example.com"     # Navigate
+  websource-browser --view                               # View full page content
+  websource-browser --selectors                          # Analyze page structure
+  websource-browser --selectors "body"                   # Analyze selectors within body
+  websource-browser --view "h1"                          # View specific element
+  websource-browser --execute "document.title"           # Execute JavaScript
+  websource-browser --stop                               # Stop session
 
 Philosophy: 
   This tool provides a PERSISTENT live JavaScript console into ANY website. Start a session 
@@ -1372,9 +1372,9 @@ Philosophy:
 async function main() {
   try {
     // Check if we're running as a daemon process
-    if (process.env.WEB_NAVIGATOR_DAEMON) {
-      const sessionName = process.env.WEB_NAVIGATOR_SESSION_NAME || 'default';
-      const headless = process.env.WEB_NAVIGATOR_HEADLESS === 'true';
+    if (process.env.WEBSOURCE_BROWSER_DAEMON) {
+      const sessionName = process.env.WEBSOURCE_BROWSER_SESSION_NAME || 'default';
+      const headless = process.env.WEBSOURCE_BROWSER_HEADLESS === 'true';
       
       const daemon = new SessionDaemon(sessionName, { headless });
       await daemon.start();
@@ -1389,7 +1389,7 @@ async function main() {
       return;
     }
 
-    const navigator = new WebNavigator();
+    const navigator = new WebSourceBrowser();
     await navigator.initialize();
 
     let result = null;
@@ -1460,7 +1460,7 @@ async function main() {
     }
 
   } catch (error) {
-    console.error(`[Web Navigator] ❌ Error: ${error.message}`);
+    console.error(`[WebSource Browser] ❌ Error: ${error.message}`);
     if (DEBUG_MODE) {
       console.error(error.stack);
     }
@@ -1471,9 +1471,9 @@ async function main() {
 // Only run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch(error => {
-    console.error(`[Web Navigator] ❌ Unhandled error: ${error.message}`);
+    console.error(`[WebSource Browser] ❌ Unhandled error: ${error.message}`);
     process.exit(1);
   });
 }
 
-export { WebNavigator };
+export { WebSourceBrowser };

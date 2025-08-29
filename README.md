@@ -1,10 +1,10 @@
-# Web Navigator
+# WebSource Browser
 
-A dynamic command-line web automation tool with persistent browser sessions. Web Navigator provides a live JavaScript console interface to any website using Puppeteer, enabling real-time interaction, inspection, and automation.
+A dynamic command-line web page analysis tool with persistent browser sessions. WebSource Browser provides a live JavaScript console interface to any website using Puppeteer, enabling real-time interaction, inspection, and automation.
 
 ## Overview
 
-Web Navigator is designed around the philosophy of providing a **persistent live JavaScript console** into any website. Instead of writing rigid automation scripts, you start a browser session once and then interact dynamically with multiple commands while the browser stays open.
+WebSource Browser is designed around the philosophy of providing a **persistent live JavaScript console** into any website. Instead of writing rigid automation scripts, you start a browser session once and then interact dynamically with multiple commands while the browser stays open.
 
 ### Key Features
 
@@ -18,46 +18,51 @@ Web Navigator is designed around the philosophy of providing a **persistent live
 
 ## Installation
 
+### Via npm (Recommended)
+
+```bash
+npm install -g websource-browser
+```
+
 ### Prerequisites
 
-- Node.js (version 14 or higher)
-- npm or yarn
+- Node.js (version 18 or higher)
+- npm
 
-### Setup
+### From Source
 
-1. Ensure the script is executable:
+If installing from source:
+
+1. Clone or download the repository
+2. Install dependencies:
 ```bash
-chmod +x web-navigator
+npm install
 ```
 
-2. Install dependencies (Puppeteer):
+3. Make executable and link globally:
 ```bash
-npm install puppeteer
-```
-
-3. Optionally, symlink to your PATH for global access:
-```bash
-ln -s /path/to/web-navigator /usr/local/bin/web-navigator
+chmod +x websource-browser
+npm link
 ```
 
 ## Quick Start
 
-Web Navigator uses a **session-based workflow**. You must start a session first, then interact with it:
+WebSource Browser uses a **session-based workflow**. You must start a session first, then interact with it:
 
 ```bash
 # 1. Start a session (browser opens and stays running)
-./web-navigator --start
+websource-browser --start
 
 # 2. Navigate to a website
-./web-navigator --navigate "https://example.com"
+websource-browser --navigate "https://example.com"
 
 # 3. Interact with the page
-./web-navigator --execute "document.title"
-./web-navigator --view "h1"
-./web-navigator --screenshot
+websource-browser --execute "document.title"
+websource-browser --view "h1"
+websource-browser --screenshot
 
 # 4. Stop the session when done
-./web-navigator --stop
+websource-browser --stop
 ```
 
 ## Core Concepts
@@ -83,38 +88,38 @@ Web Navigator uses a **session-based workflow**. You must start a session first,
 
 ```bash
 # Start a session
-./web-navigator --start [--session <name>]
+websource-browser --start [--session <name>]
 
 # Stop a session  
-./web-navigator --stop [--session <name>]
+websource-browser --stop [--session <name>]
 
 # List all sessions
-./web-navigator --list-sessions
+websource-browser --list-sessions
 
 # Specify session name for any command
-./web-navigator --navigate "https://example.com" --session my-session
+websource-browser --navigate "https://example.com" --session my-session
 ```
 
 ### Navigation
 
 ```bash
 # Navigate to URL
-./web-navigator --navigate "https://example.com"
+websource-browser --navigate "https://example.com"
 
 # Wait time after navigation (default: 2000ms)
-./web-navigator --navigate "https://example.com" --wait 5000
+websource-browser --navigate "https://example.com" --wait 5000
 ```
 
 ### JavaScript Execution
 
 ```bash
 # Execute JavaScript and get results
-./web-navigator --execute "document.title"
-./web-navigator --execute "document.querySelectorAll('a').length"
-./web-navigator --execute "window.location.href"
+websource-browser --execute "document.title"
+websource-browser --execute "document.querySelectorAll('a').length"
+websource-browser --execute "window.location.href"
 
 # Complex JavaScript
-./web-navigator --execute "
+websource-browser --execute "
   Array.from(document.querySelectorAll('a'))
     .map(a => ({ text: a.textContent, href: a.href }))
     .slice(0, 5)
@@ -125,55 +130,55 @@ Web Navigator uses a **session-based workflow**. You must start a session first,
 
 ```bash
 # View entire page content
-./web-navigator --view
+websource-browser --view
 
 # View specific element
-./web-navigator --view "h1"
-./web-navigator --view "#main-content"
-./web-navigator --view ".article-title"
+websource-browser --view "h1"
+websource-browser --view "#main-content"
+websource-browser --view ".article-title"
 
 # Analyze page selectors
-./web-navigator --selectors
+websource-browser --selectors
 
 # Analyze selectors within element
-./web-navigator --selectors "main"
-./web-navigator --selectors "#content"
+websource-browser --selectors "main"
+websource-browser --selectors "#content"
 ```
 
 ### Screenshots
 
 ```bash
 # Take screenshot (auto-named)
-./web-navigator --screenshot
+websource-browser --screenshot
 
 # Take screenshot with specific filename
-./web-navigator --screenshot "my-page.png"
+websource-browser --screenshot "my-page.png"
 ```
 
 ### Output Formatting
 
 ```bash
 # Pretty-printed JSON output
-./web-navigator --execute "document.title" --format pretty
+websource-browser --execute "document.title" --format pretty
 
 # Save output to file
-./web-navigator --view "h1" --output element-info.json
+websource-browser --view "h1" --output element-info.json
 
 # Combine formatting and output
-./web-navigator --selectors --format pretty --output page-structure.json
+websource-browser --selectors --format pretty --output page-structure.json
 ```
 
 ### General Options
 
 ```bash
 # Show help
-./web-navigator --help
+websource-browser --help
 
 # Enable debug mode
-./web-navigator --debug --start
+websource-browser --debug --start
 
 # All commands support debug mode
-./web-navigator --debug --execute "console.log('debug test')"
+websource-browser --debug --execute "console.log('debug test')"
 ```
 
 ## Usage Examples
@@ -182,11 +187,11 @@ Web Navigator uses a **session-based workflow**. You must start a session first,
 
 ```bash
 # Start session and navigate
-./web-navigator --start --session news
-./web-navigator --navigate "https://news.ycombinator.com" --session news
+websource-browser --start --session news
+websource-browser --navigate "https://news.ycombinator.com" --session news
 
 # Extract headlines
-./web-navigator --execute "
+websource-browser --execute "
   Array.from(document.querySelectorAll('.titleline > a'))
     .slice(0, 10)
     .map(a => ({
@@ -196,44 +201,44 @@ Web Navigator uses a **session-based workflow**. You must start a session first,
 " --session news --format pretty
 
 # Clean up
-./web-navigator --stop --session news
+websource-browser --stop --session news
 ```
 
 ### Form Interaction
 
 ```bash
 # Navigate to a search page
-./web-navigator --start
-./web-navigator --navigate "https://google.com"
+websource-browser --start
+websource-browser --navigate "https://google.com"
 
 # Fill and submit form
-./web-navigator --execute "document.querySelector('input[name=\"q\"]').value = 'Node.js'"
-./web-navigator --execute "document.querySelector('form').submit()"
+websource-browser --execute "document.querySelector('input[name=\"q\"]').value = 'Node.js'"
+websource-browser --execute "document.querySelector('form').submit()"
 
 # Wait for results and take screenshot
-./web-navigator --screenshot search-results.png
-./web-navigator --stop
+websource-browser --screenshot search-results.png
+websource-browser --stop
 ```
 
 ### Page Analysis Workflow
 
 ```bash
 # Start session
-./web-navigator --start --session analysis
+websource-browser --start --session analysis
 
 # Navigate to target page
-./web-navigator --navigate "https://example.com" --session analysis
+websource-browser --navigate "https://example.com" --session analysis
 
 # Get overview of page structure
-./web-navigator --selectors --session analysis --format pretty
+websource-browser --selectors --session analysis --format pretty
 
 # Inspect specific sections
-./web-navigator --view "header" --session analysis
-./web-navigator --view "main" --session analysis
-./web-navigator --selectors "main" --session analysis
+websource-browser --view "header" --session analysis
+websource-browser --view "main" --session analysis
+websource-browser --selectors "main" --session analysis
 
 # Extract specific data
-./web-navigator --execute "
+websource-browser --execute "
   {
     title: document.title,
     links: document.querySelectorAll('a').length,
@@ -243,36 +248,36 @@ Web Navigator uses a **session-based workflow**. You must start a session first,
 " --session analysis --format pretty
 
 # Take final screenshot
-./web-navigator --screenshot final-state.png --session analysis
-./web-navigator --stop --session analysis
+websource-browser --screenshot final-state.png --session analysis
+websource-browser --stop --session analysis
 ```
 
 ### Multiple Sessions
 
 ```bash
 # Start multiple sessions for different tasks
-./web-navigator --start --session site1
-./web-navigator --start --session site2
+websource-browser --start --session site1
+websource-browser --start --session site2
 
 # Work with different sites simultaneously
-./web-navigator --navigate "https://github.com" --session site1
-./web-navigator --navigate "https://stackoverflow.com" --session site2
+websource-browser --navigate "https://github.com" --session site1
+websource-browser --navigate "https://stackoverflow.com" --session site2
 
 # Check session status
-./web-navigator --list-sessions
+websource-browser --list-sessions
 
 # Work with each session independently
-./web-navigator --execute "document.title" --session site1
-./web-navigator --execute "document.title" --session site2
+websource-browser --execute "document.title" --session site1
+websource-browser --execute "document.title" --session site2
 
 # Stop specific sessions
-./web-navigator --stop --session site1
-./web-navigator --stop --session site2
+websource-browser --stop --session site1
+websource-browser --stop --session site2
 ```
 
 ## Architecture
 
-Web Navigator consists of several key components:
+WebSource Browser consists of several key components:
 
 ### WebNavigator (Main Class)
 - Client interface that connects to browser sessions
@@ -281,7 +286,7 @@ Web Navigator consists of several key components:
 
 ### SessionManager
 - Manages session metadata and state files
-- Located at `~/.local/lib/web-navigator/sessions/`
+- Located at `~/.local/lib/websource-browser/sessions/`
 - Tracks session activity and health
 
 ### SessionDaemon
@@ -300,7 +305,7 @@ Web Navigator consists of several key components:
 ## Configuration
 
 ### Session Storage
-Sessions are stored in: `~/.local/lib/web-navigator/sessions/`
+Sessions are stored in: `~/.local/lib/websource-browser/sessions/`
 
 Each session is a JSON file containing:
 - WebSocket endpoint for browser connection
@@ -321,35 +326,35 @@ Each session is a JSON file containing:
 **Session doesn't start**
 ```bash
 # Check if session exists and clean up
-./web-navigator --list-sessions
-./web-navigator --stop --session <name>
+websource-browser --list-sessions
+websource-browser --stop --session <name>
 
 # Try starting with debug mode
-./web-navigator --debug --start
+websource-browser --debug --start
 ```
 
 **Command says "no active session"**
 ```bash
 # Ensure session is started first
-./web-navigator --start
+websource-browser --start
 
 # Check session status
-./web-navigator --list-sessions
+websource-browser --list-sessions
 ```
 
 **JavaScript execution fails**
 ```bash
 # Use debug mode to see detailed errors
-./web-navigator --debug --execute "your-code-here"
+websource-browser --debug --execute "your-code-here"
 
 # Check if page has loaded completely
-./web-navigator --execute "document.readyState"
+websource-browser --execute "document.readyState"
 ```
 
 **Permission errors**
 ```bash
 # Make sure script is executable
-chmod +x web-navigator
+chmod +x websource-browser
 
 # Check Node.js and npm permissions
 npm list puppeteer
@@ -360,9 +365,9 @@ npm list puppeteer
 Enable verbose output with `--debug`:
 
 ```bash
-./web-navigator --debug --start
-./web-navigator --debug --navigate "https://example.com"
-./web-navigator --debug --execute "document.title"
+websource-browser --debug --start
+websource-browser --debug --navigate "https://example.com"
+websource-browser --debug --execute "document.title"
 ```
 
 Debug mode shows:
@@ -377,36 +382,36 @@ Clean up stuck sessions:
 
 ```bash
 # List all sessions
-./web-navigator --list-sessions
+websource-browser --list-sessions
 
 # Stop specific session
-./web-navigator --stop --session <name>
+websource-browser --stop --session <name>
 
 # Manual cleanup if needed
-rm ~/.local/lib/web-navigator/sessions/<name>.json
+rm ~/.local/lib/websource-browser/sessions/<name>.json
 ```
 
 ## Advanced Usage
 
 ### Automation Scripts
 
-Web Navigator can be used in shell scripts:
+WebSource Browser can be used in shell scripts:
 
 ```bash
 #!/bin/bash
 SESSION="automation-$(date +%s)"
 
 # Start session
-./web-navigator --start --session "$SESSION"
+websource-browser --start --session "$SESSION"
 
 # Navigate and extract data
-./web-navigator --navigate "https://example.com" --session "$SESSION"
-DATA=$(./web-navigator --execute "document.title" --session "$SESSION")
+websource-browser --navigate "https://example.com" --session "$SESSION"
+DATA=$(websource-browser --execute "document.title" --session "$SESSION")
 
 echo "Page title: $DATA"
 
 # Cleanup
-./web-navigator --stop --session "$SESSION"
+websource-browser --stop --session "$SESSION"
 ```
 
 ### JSON Processing
@@ -415,10 +420,10 @@ Combine with `jq` for advanced JSON processing:
 
 ```bash
 # Extract specific fields
-./web-navigator --execute "document.title" --format json | jq -r '.result'
+websource-browser --execute "document.title" --format json | jq -r '.result'
 
 # Process complex data
-./web-navigator --selectors --format json | jq '.analysis.tagCounts'
+websource-browser --selectors --format json | jq '.analysis.tagCounts'
 ```
 
 ### Background Monitoring
@@ -427,18 +432,18 @@ Since sessions run as background daemons, you can:
 
 ```bash
 # Start long-running session
-./web-navigator --start --session monitor
+websource-browser --start --session monitor
 
 # Run periodic checks
 while true; do
-  ./web-navigator --execute "document.title" --session monitor
+  websource-browser --execute "document.title" --session monitor
   sleep 60
 done
 ```
 
 ## Security Considerations
 
-- Web Navigator executes arbitrary JavaScript in web pages
+- WebSource Browser executes arbitrary JavaScript in web pages
 - Be cautious when running JavaScript from untrusted sources  
 - Sessions run with the same permissions as your user account
 - Browser sessions may persist cookies and authentication
@@ -455,7 +460,7 @@ This is a single-file Node.js application. Key areas for contribution:
 
 ## License
 
-[Add your license information here]
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Related Tools
 

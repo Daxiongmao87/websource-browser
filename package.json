@@ -1,0 +1,61 @@
+{
+  "name": "websource-browser",
+  "version": "1.0.0",
+  "description": "Dynamic web page analysis tool with persistent browser sessions for intelligent source code investigation and element discovery",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "bin": {
+    "websource-browser": "websource-browser"
+  },
+  "files": [
+    "websource-browser",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "start": "node websource-browser",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:dry": "standard-version --dry-run",
+    "release:first": "standard-version --first-release",
+    "postrelease": "git push --follow-tags origin main && npm publish"
+  },
+  "keywords": [
+    "web",
+    "browser",
+    "automation",
+    "analysis",
+    "scraping",
+    "javascript",
+    "puppeteer",
+    "selectors",
+    "dom",
+    "cli",
+    "tool",
+    "investigation",
+    "source-code",
+    "web-analysis"
+  ],
+  "author": "Patrick",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daxiongmao87/websource-browser.git"
+  },
+  "homepage": "https://github.com/Daxiongmao87/websource-browser#readme",
+  "bugs": {
+    "url": "https://github.com/Daxiongmao87/websource-browser/issues"
+  },
+  "dependencies": {
+    "puppeteer": "^24.0.0"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
