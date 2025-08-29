@@ -1,6 +1,6 @@
 {
   "name": "websource-browser",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Dynamic web page analysis tool with persistent browser sessions for intelligent source code investigation and element discovery",
   "engines": {
     "node": ">=18.0.0"
