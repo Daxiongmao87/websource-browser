@@ -462,6 +462,80 @@ This is a single-file Node.js application. Key areas for contribution:
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
+## Model Context Protocol (MCP) Support
+
+WebSource Browser can be used as an MCP server, allowing LLMs like Claude, Qwen Code, and Codex to interact with web pages through a standardized protocol.
+
+### Starting the MCP Server
+
+```bash
+# Start the MCP server mode
+websource-browser --mcp
+```
+
+### MCP Tools
+
+The MCP server exposes the following tools that can be used by LLMs:
+
+- **startSession** - Start a new browser session
+- **stopSession** - Stop an existing browser session
+- **listSessions** - List all active sessions
+- **navigate** - Navigate to a URL in a session
+- **refresh** - Refresh the current page
+- **executeJavaScript** - Execute JavaScript code and return results
+- **viewElement** - View page or element information
+- **analyzeSelectors** - Analyze page selectors
+- **takeScreenshot** - Take a screenshot of the page
+
+### General Setup Instructions
+
+WebSource Browser can be configured as an MCP server with any MCP-compatible client. Here are general instructions for common platforms:
+
+#### Prerequisites
+First, install WebSource Browser globally:
+```bash
+npm install -g websource-browser
+```
+
+#### Configuration for Different Platforms
+
+**Claude Desktop:**
+Add the server using Claude's CLI:
+```bash
+claude mcp add websource-browser websource-browser -- --mcp
+```
+
+**Qwen Code:**
+Add the server using Qwen's CLI:
+```bash
+qwen mcp add websource-browser websource-browser -- --mcp
+```
+
+**Codex:**
+Add the following to `~/.codex/config.toml`:
+```toml
+[mcp_servers.websource-browser]
+command = "websource-browser"
+args = ["--mcp"]
+```
+
+**Manual Configuration:**
+For other MCP-compatible clients, configure a stdio-based server with:
+- Command: `websource-browser`
+- Arguments: `--mcp`
+
+### Example Usage
+
+When configured with an MCP client, you can instruct the LLM to:
+
+1. Start browser sessions
+2. Navigate to websites
+3. Execute JavaScript to interact with pages
+4. Extract information from web pages
+5. Take screenshots for visual analysis
+
+This enables complex web automation workflows driven by natural language instructions.
+
 ## Related Tools
 
 - [Puppeteer](https://pptr.dev/) - The underlying browser automation library

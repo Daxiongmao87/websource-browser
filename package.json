@@ -1,6 +1,6 @@
 {
   "name": "websource-browser",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Dynamic web page analysis tool with persistent browser sessions for intelligent source code investigation and element discovery",
   "engines": {
     "node": ">=18.0.0"
@@ -11,12 +11,14 @@
   },
   "files": [
     "websource-browser",
+    "mcp-server.js",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
   "scripts": {
     "start": "node websource-browser",
+    "mcp": "node websource-browser --mcp",
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
@@ -40,7 +42,9 @@
     "tool",
     "investigation",
     "source-code",
-    "web-analysis"
+    "web-analysis",
+    "mcp",
+    "model-context-protocol"
   ],
   "author": "Patrick",
   "license": "MIT",
@@ -53,6 +57,7 @@
     "url": "https://github.com/Daxiongmao87/websource-browser/issues"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
     "puppeteer": "^24.0.0"
   },
   "devDependencies": {
